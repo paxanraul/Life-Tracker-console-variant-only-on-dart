@@ -1,0 +1,17 @@
+{
+  "version": "0.2.0",
+  "git.ignoreLimitWarning": true,
+  "configurations": [
+    {
+      "name": "Dart",
+      "type": "dart",
+      "request": "launch",
+      "program": "console_rpg.dart",
+      "console": "integratedTerminal",
+      "args": [],
+      "env": {
+        "PYTHONIOENCODING": "utf-8"
+      }
+    }
+  ]
+}
