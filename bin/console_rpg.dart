@@ -5,7 +5,7 @@ void main() {
   
   stdout.encoding = utf8;
   
-  int exp = 0;
+  int exp = 1;
   int gold = 100; 
   int level = 1;
 
