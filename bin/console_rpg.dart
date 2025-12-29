@@ -9,7 +9,7 @@ void main(){
   int gold = 100; 
   int level = 1;
 
-  stdout.write('Салам алейкум! Назови своего персонажа: ');
+  stdout.write('Салам алейкум!! Назови своего персонажа: ');
   
  
   String salam = stdin.readLineSync(encoding: utf8)!.trim(); 
