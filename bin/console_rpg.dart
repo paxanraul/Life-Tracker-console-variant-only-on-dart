@@ -30,10 +30,7 @@ void main() {
   
   if (answer == "да") {
     print("\n✅ Вы выбрали: ДА");
-    stdout.write("Отлично, выберите способ оплаты (сбп/карта): ");
-    
-    String payment = stdin.readLineSync(encoding: utf8)!.trim();
-    stdout.write("Вы выбрали оплату через $payment. Перейдите пожалуйста по ссылке для оплаты в телеграм t.me/whocaresbratec");
+    stdout.write("Отлично! Перейдите пожалуйста по ссылке для оплаты в телеграм t.me/whocaresbratec");
   } else if (answer == "нет") {
     print("\n❌ Вы выбрали: НЕТ");
     stdout.write("\nПочему нет? Напишите об этом пожалуйста: ");
