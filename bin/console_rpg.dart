@@ -1,7 +1,7 @@
 import "dart:io";
-import "dart:convert";  // ← ВАЖНО!
+import "dart:convert";  
 
-void main(){
+void main() {
   
   stdout.encoding = utf8;
   
