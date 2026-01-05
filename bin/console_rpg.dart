@@ -2,16 +2,15 @@ import "dart:io";
 import "dart:convert";  
 
 void main() {
-  
   stdout.encoding = utf8;
   
   int exp = 0;
   int gold = 100; 
   int level = 1;
+  
   print("⚡️Добро пожаловать в Life-Tracker⚡️");
   stdout.write('Назови своего персонажа: ');
   
- 
   String salam = stdin.readLineSync(encoding: utf8)!.trim(); 
   
   print('Отлично, приятно познакомиться $salam, пора приступать к улучшению вашей жизни!\n');
@@ -24,9 +23,7 @@ void main() {
   print("Не желаете ли приобрести начальный пакет для быстрого результата?");
   stdout.write("(да/нет): ");
   
-
   String answer = stdin.readLineSync(encoding: utf8)!.trim().toLowerCase();
-  
   
   if (answer == "да") {
     print("\n✅ Вы выбрали: ДА");
@@ -38,9 +35,66 @@ void main() {
     String explanation = stdin.readLineSync(encoding: utf8)!.trim();
     stdout.write("\nВаш ответ: $explanation");
     print("\nСпасибо за обратную связь!");
-    
   } else {
     print("\n😵 Непонятный ответ: '$answer', попробуйте еще раз.");
   }
+  
   stdout.write("\nЖелаем вам успехов!");
+
+  String task1 = "";
+  bool validTask = false;
+  
+  while (!validTask) {
+    stdout.write("\n\nПора приступать!\nЧто сегодня хотите сделать? Напишите свою задачу: ");
+    task1 = stdin.readLineSync(encoding: utf8)!.trim();
+    
+    if (task1.isEmpty) {
+      print("❌ Задача не может быть пустой! Попробуйте снова.");
+    } else if (task1.length < 3) {
+      print("❌ Слишком короткое описание! Минимум 3 символа.");
+    } else {
+      validTask = true;
+    }
+  }
+  
+  print("\nВы хотите сделать: $task1");
+  print("Ваше задание оценивается как: Сложное👹");
+  
+  // === ПРОВЕРКА ОПЫТА (ТОЛЬКО ЦИФРЫ) ===
+  int expReward = 0;
+  bool validExp = false;
+  
+  while (!validExp) {
+    stdout.write("\nСколько опыта вы бы хотели за него получить? (напишите цифрами): ");
+    String expInput = stdin.readLineSync(encoding: utf8)!.trim();
+    
+    if (int.tryParse(expInput) != null) {
+      expReward = int.parse(expInput);
+      if (expReward > 0) {
+        validExp = true;
+      } else {
+        print("❌ Опыт должен быть больше 0!");
+      }
+    } else {
+      print("❌ Только цифры! Вы ввели: '$expInput'");
+    }
+  }
+  
+  print("\n$expReward опыта, отлично!");
+  
+  // Добавляем опыт к персонажу
+  exp += expReward;
+  print("\n🎉 Теперь у вас $exp опыта!");
+  
+  // Проверяем уровень
+  if (exp >= 100) {
+    level++;
+    exp = exp - 100;
+    print("\n🎊 ПОЗДРАВЛЯЕМ! Вы достигли $level уровня!");
+  }
+  
+  print("\n📊 ОБНОВЛЕННАЯ СТАТИСТИКА:");
+  print("Опыт: $exp/100");
+  print("Уровень: $level");
+  print("Золото: $gold");
 }
