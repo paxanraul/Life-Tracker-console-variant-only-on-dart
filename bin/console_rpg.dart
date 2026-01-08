@@ -107,7 +107,7 @@ void main() {
   if (answer == "да") {
     print("\n✅ Вы выбрали: ДА");
     stdout.write("Отлично! Перейдите пожалуйста по ссылке для оплаты в телеграм t.me/whocaresbratec");
-    stdout.write("Спасибо за оплату!");
+    stdout.write("\nСпасибо за оплату!");
   } else if (answer == "нет") {
     print("\n❌ Вы выбрали: НЕТ");
     stdout.write("\nПочему нет? Напишите об этом пожалуйста: ");
