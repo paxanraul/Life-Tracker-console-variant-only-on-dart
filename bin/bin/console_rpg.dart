@@ -16,7 +16,7 @@ void showStats(int exp, int level, int gold, int expNeeded) {
   }
 }
 
-// Проверка повышения уровня (даже)
+// Проверка повышения уровня
 Map<String, int> checkLevelUp(int exp, int level, int gold, int expNeeded) {
   while (exp >= expNeeded) {
     level++;
