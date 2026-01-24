@@ -16,7 +16,7 @@ void showStats(int exp, int level, int gold, int expNeeded) {
   }
 }
 
-// Проверка повышения уровня (САЛАМЧИК)
+// Проверка повышения уровня 
 Map<String, int> checkLevelUp(int exp, int level, int gold, int expNeeded) {
   while (exp >= expNeeded) {
     level++;
@@ -103,6 +103,27 @@ String getValidText(String prompt, int minLength) {
   return text;
 }
 
+// ФУНКЦИЯ проверки имени
+String getValidName() {
+  String name = "";
+  bool valid = false;
+  
+  while (!valid) {
+    stdout.write('Назови своего персонажа: ');
+    name = stdin.readLineSync(encoding: utf8)!.trim();
+    
+    if (name.isEmpty) {
+      print("❌ Имя не может быть пустым!");
+    } else if (name.length < 3) {
+      print('❌ Имя слишком короткое! Минимум 3 символа. Попробуйте снова.');
+    } else {
+      valid = true;
+    }
+  }
+  
+  return name;
+}
+
 // === ГЛАВНАЯ ФУНКЦИЯ ===
 void main() {
   stdout.encoding = utf8;
@@ -113,8 +134,8 @@ void main() {
   int expNeeded = 100;
   
   print("⚡️Добро пожаловать в Life-Tracker⚡️");
-  stdout.write('Назови своего персонажа: ');
-  String salam = stdin.readLineSync(encoding: utf8)!.trim();
+  
+  String salam = getValidName();
   
   print('Отлично, приятно познакомиться $salam, пора приступать к улучшению вашей жизни!\n');
   
@@ -134,7 +155,7 @@ void main() {
     stdout.write("\nПочему нет? Напишите об этом пожалуйста: ");
     String explanation = stdin.readLineSync(encoding: utf8)!.trim();
     stdout.write("\nВаш ответ: $explanation");
-    print("\nСпасибо за обратную связь!");
+    print("\nСпасибо за обратной связи!");
   } else {
     print("\n😵 Непонятный ответ: '$answer', попробуйте еще раз.");
   }
