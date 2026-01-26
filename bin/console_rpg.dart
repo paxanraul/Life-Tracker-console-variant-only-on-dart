@@ -124,6 +124,107 @@ String getValidName() {
   return name;
 }
 
+// Создание нескольких задач
+List<Map<String, dynamic>> createMultipleTasks() {
+  List<Map<String, dynamic>> tasks = [];
+  bool addingMore = true;
+  int taskNumber = 1;
+
+  print("\n🎯           Создание задач");
+  print("=" * 40);
+
+  while (addingMore) {
+    print("\n--- Задача №$taskNumber ---");
+    // Запрашиваем описание задачи (добавил двоеточие для ясности)
+    String description = getValidText("Описание задачи: ", 3);
+
+    // Запрашиваем опыт для задачи
+    int expReward = getValidNumber("Опыт за выполнение (цифрами): ");
+
+    // Определяем сложность 
+    String difficulty = getDifficulty(expReward);
+
+    // Создаем задачу
+    Map<String, dynamic> task = {
+      "number": taskNumber,
+      "description": description,
+      "expReward": expReward, 
+      "difficulty": difficulty,
+      "completed": false
+    };
+
+    tasks.add(task);
+    print("✅ Задача добавлена: '$description', ($difficulty, +$expReward опыта)");
+
+    // Добавить ли ещё?
+    stdout.write("\nДобавить ещё одну задачу? (да/нет): ");
+    String answer = stdin.readLineSync(encoding: utf8)!.trim().toLowerCase();
+
+    if (answer != "да") {
+      addingMore = false;
+    } else {
+      taskNumber++;
+    }
+  }
+
+  return tasks;
+}
+
+void showAllTasks(List<Map<String, dynamic>> tasks) {
+  if (tasks.isEmpty) {
+    print("\nНихуя те делать не надо ❌");
+    return;
+  }
+
+  print("\n📝 ВАШИ ЗАДАЧИ:");
+  print("=" * 40);
+
+  for (var task in tasks) {
+    String status = task["completed"] ? "✅" : "📋";
+    print("$status Задача ${task["number"]}: ${task["description"]}");
+    print("     Сложность: ${task["difficulty"]} | Опыт:  +${task["expReward"]}");
+    print("-" * 40);  // Изменил на тире для лучшего вида
+  }
+}
+
+// Выполнение задач (исправлена для возврата результатов)
+Map<String, int> completeTasks(List<Map<String, dynamic>> tasks) {
+  print("\n👾 ВЫПОЛНЕНИЕ ЗАДАЧ");
+  print("=" * 40);
+
+  int exp = 0;
+  int totalExpEarned = 0;
+  int tasksCompleted = 0;
+  
+  for (var task in tasks) {
+    print("\n--- Задача ${task["number"]}: ${task["description"]} ---");
+    stdout.write("Выполнили эту задачу? (да/нет): ");
+    String answer = stdin.readLineSync(encoding: utf8)!.trim().toLowerCase();
+
+    if (answer == "да") {
+      task["completed"] = true;
+      int expReward = task["expReward"] as int; // Явное приведение типа
+      exp += expReward;
+      totalExpEarned += expReward;
+      tasksCompleted++;
+
+      print("✅ АЙ САУЛ! +$expReward");
+    } else {
+      print("❌ НУ ЧЕТ НЕ САУЛ");
+    }
+  }
+
+  // Конечный результат
+  print("\n" + "=" * 40);
+  print("🏆 Результат:");
+  print("Выполнение задач: $tasksCompleted/${tasks.length}");
+  print("Получено опыта: +$totalExpEarned");
+  print("Всего опыта: $exp");
+  
+  // Возвращаем только опыт, так как уровень проверяется отдельно
+  return {"exp": exp, "totalExpEarned": totalExpEarned};
+}
+
 // === ГЛАВНАЯ ФУНКЦИЯ ===
 void main() {
   stdout.encoding = utf8;
@@ -148,58 +249,102 @@ void main() {
   
   if (answer == "да") {
     print("\n✅ Вы выбрали: ДА");
-    stdout.write("Отлично! Перейдите пожалуйста по ссылке для оплаты в телеграм t.me/whocaresbratec");
-    stdout.write("Спасибо за оплату!");
+    print("Отлично! Перейдите пожалуйста по ссылке для оплаты в телеграм t.me/whocaresbratec");
+    print("Спасибо за оплату!");
   } else if (answer == "нет") {
     print("\n❌ Вы выбрали: НЕТ");
     stdout.write("\nПочему нет? Напишите об этом пожалуйста: ");
     String explanation = stdin.readLineSync(encoding: utf8)!.trim();
-    stdout.write("\nВаш ответ: $explanation");
-    print("\nСпасибо за обратной связи!");
+    print("\nВаш ответ: $explanation");
+    print("\nСпасибо за обратную связь!");
   } else {
     print("\n😵 Непонятный ответ: '$answer', попробуйте еще раз.");
   }
   
-  stdout.write("\nЖелаем вам успехов!");
+  print("\nЖелаем вам успехов!");
   
-  // === СОЗДАНИЕ ЗАДАЧИ ===
-  String task1 = getValidText("\n\nПора приступать!\nЧто сегодня хотите сделать? Напишите свою задачу: ", 3);
-  print("\nВы хотите сделать: $task1");
+  // === СОЗДАНИЕ НЕСКОЛЬКИХ ЗАДАЧ ===
+  print("\n\nПора приступать!");
+  stdout.write("Хотите создать задачи? (да/нет): ");
+  String startAnswer = stdin.readLineSync(encoding: utf8)!.trim().toLowerCase();
   
-  // Сначала спрашиваем опыт
-  int expReward = getValidNumber("\nСколько опыта вы бы хотели за него получить? (напишите цифрами): ");
-  
-  // ТЕПЕРЬ определяем сложность на основе опыта
-  String difficulty = getDifficulty(expReward);
-  print("\n$expReward опыта, отлично!");
-  print("Ваше задание оценивается как: $difficulty");
-  
-  // === ПРОВЕРКА ВЫПОЛНЕНИЯ ===
-  stdout.write("\nВы выполнили задание? (да/нет): ");
-  String completed = stdin.readLineSync(encoding: utf8)!.trim().toLowerCase();
-  
-  if (completed == "да") {
-    print("\n🎉 Отлично! Вы выполнили задание!");
+  List<Map<String, dynamic>> tasks = []; // Объявляем переменную здесь
+
+  if (startAnswer == "да") {
+    // 1. Создаем задачи
+    tasks = createMultipleTasks();
     
-    // Добавляем опыт к персонажу
-    exp += expReward;
-    print("💫 Получено опыта: +$expReward");
-    print("Теперь у вас $exp опыта!");
+    // 2. Показываем все задачи
+    showAllTasks(tasks);
     
-    // Проверяем уровень
-    Map<String, int> result = checkLevelUp(exp, level, gold, expNeeded);
-    exp = result["exp"]!;
-    level = result["level"]!;
-    gold = result["gold"]!;
-    expNeeded = result["expNeeded"]!;
+    // 3. Спрашиваем начать ли выполнение
+    stdout.write("\n\nНачать выполнение задач? (да/нет): ");
+    String executeAnswer = stdin.readLineSync(encoding: utf8)!.trim().toLowerCase();
     
-  } else if (completed == "нет") {
-    print("\n😔 Ничего страшного! В следующий раз обязательно получится!");
-    print("Опыт не получен. Попробуйте снова!");
+    if (executeAnswer == "да") {
+      // 4. Выполняем задачи и получаем опыт
+      Map<String, int> taskResults = completeTasks(tasks);
+      int earnedExp = taskResults["exp"]!;
+      int totalEarned = taskResults["totalExpEarned"]!;
+      
+      // 5. Добавляем опыт к персонажу
+      exp += earnedExp;
+      print("\n🥳 ЗАДАЧИ ВЫПОЛНЕНЫ!");
+      print("💫 Общий полученный опыт: +$totalEarned");
+      print("📊 Теперь у вас $exp опыта!");
+      
+      // 6. Проверяем уровень
+      Map<String, int> result = checkLevelUp(exp, level, gold, expNeeded);
+      exp = result["exp"]!;
+      level = result["level"]!;
+      gold = result["gold"]!;
+      expNeeded = result["expNeeded"]!;
+      
+      // 7. Показываем обновленную статистику
+      showStats(exp, level, gold, expNeeded);
+      
+    } else {
+      print("\nОтложим задачи на потом😴");
+      showStats(exp, level, gold, expNeeded);
+    }
+    
   } else {
-    print("\n😵 Непонятный ответ: '$completed'");
-    print("Опыт не получен.");
+    print("\nПропускаем создание задач...");
+    
+    // === СТАРАЯ ЛОГИКА ДЛЯ ОДНОЙ ЗАДАЧИ ===
+    String task1 = getValidText("\nЧто сегодня хотите сделать? Напишите свою задачу: ", 3);
+    print("\nВы хотите сделать: $task1");
+    
+    int expReward = getValidNumber("\nСколько опыта вы бы хотели за него получить? (напишите цифрами): ");
+    
+    String difficulty = getDifficulty(expReward);
+    print("\n$expReward опыта, отлично!");
+    print("Ваше задание оценивается как: $difficulty");
+    
+    stdout.write("\nВы выполнили задание? (да/нет): ");
+    String completed = stdin.readLineSync(encoding: utf8)!.trim().toLowerCase();
+    
+    if (completed == "да") {
+      print("\n🎉 Отлично! Вы выполнили задание!");
+      
+      exp += expReward;
+      print("💫 Получено опыта: +$expReward");
+      print("Теперь у вас $exp опыта!");
+      
+      Map<String, int> result = checkLevelUp(exp, level, gold, expNeeded);
+      exp = result["exp"]!;
+      level = result["level"]!;
+      gold = result["gold"]!;
+      expNeeded = result["expNeeded"]!;
+      
+    } else if (completed == "нет") {
+      print("\n😔 Ничего страшного! В следующий раз обязательно получится!");
+      print("Опыт не получен. Попробуйте снова!");
+    } else {
+      print("\n😵 Непонятный ответ: '$completed'");
+      print("Опыт не получен.");
+    }
+    
+    showStats(exp, level, gold, expNeeded);
   }
-  
-  showStats(exp, level, gold, expNeeded);
 }
